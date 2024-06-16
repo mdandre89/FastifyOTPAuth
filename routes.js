@@ -1,6 +1,8 @@
 const authController = require("./controllers/auth.controller");
 
 async function routes(fastify, options) {
+  fastify.get("/allowed", { preHandler: [authController.authenticateToken], handler: authController.allowed});
+
   fastify.post("/auth/login", authController.login);
   fastify.post("/auth/register", authController.register);
   fastify.put("/auth/update-password", { preHandler: [authController.authenticateToken], handler: authController.updatePassword});

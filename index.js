@@ -14,23 +14,18 @@ const fastifyCors  = require('@fastify/cors')
 const dotenv = require("dotenv");
 dotenv.config();
 
-const originURL = process.env.environment === 'production' ? '' : process.env.developmentOriginUrl
+const originURL = process.env.environment === 'production' ? process.env.productionOriginUrl : process.env.developmentOriginUrl
 fastify.register(fastifyCors , {
   // origin: '*',
   origin: originURL,
-  credentials: true, // Enable credentials (cookies)
-  methods: ['GET', 'POST', 'PUT', 'DELETE']
+  credentials: true, // Enable credentials (cookies) 
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  exposedHeaders: ['Set-Cookie']
 })
 
 const fastifyCookie = require('@fastify/cookie');
 fastify.register(fastifyCookie);
 
-
-
-// Declare a route
-fastify.get('/', function (request, reply) {
-  reply.send("Hello World")
-})
 
 // healthcheck
 fastify.get('/healthz', function (request, reply) {
